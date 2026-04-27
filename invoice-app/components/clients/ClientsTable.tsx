@@ -235,7 +235,16 @@ export function ClientsTable() {
       <ConfirmDialog
         open={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
-        onConfirm={() => clientToDelete && deleteMutation.mutate(clientToDelete)}
+        onConfirm={() => {
+          if (clientToDelete) {
+            deleteMutation.mutate(clientToDelete, {
+              onSuccess: () => {
+                setIsDeleteDialogOpen(false)
+                setClientToDelete(null)
+              }
+            })
+          }
+        }}
         title="Delete Client"
         description="Are you sure you want to delete this client? This action cannot be undone and will fail if the client has existing invoices."
         confirmLabel={deleteMutation.isPending ? "Deleting..." : "Delete"}

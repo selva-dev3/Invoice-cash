@@ -257,7 +257,16 @@ export function InvoiceTable() {
       <ConfirmDialog
         open={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
-        onConfirm={() => invoiceToDelete && deleteMutation.mutate(invoiceToDelete)}
+        onConfirm={() => {
+          if (invoiceToDelete) {
+            deleteMutation.mutate(invoiceToDelete, {
+              onSuccess: () => {
+                setIsDeleteDialogOpen(false)
+                setInvoiceToDelete(null)
+              }
+            })
+          }
+        }}
         title="Delete Invoice"
         description="Are you sure you want to delete this invoice? Only draft invoices can be deleted. This action cannot be undone."
         confirmLabel={deleteMutation.isPending ? "Deleting..." : "Delete"}

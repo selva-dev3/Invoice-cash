@@ -15,6 +15,7 @@ import {
 import { cn } from "@/lib/utils"
 import { signOut } from "next-auth/react"
 import { motion } from "framer-motion"
+import { ThemeToggle } from "./ThemeToggle"
 
 const routes = [
   {
@@ -115,14 +116,15 @@ export function Sidebar() {
         })}
       </div>
 
-      <div className="p-4 border-t">
+      <div className="p-4 border-t flex items-center justify-between gap-4">
         <button
           onClick={() => signOut()}
-          className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-red-50 hover:text-red-600 transition-colors"
+          className="flex items-center gap-3 flex-1 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-red-50 hover:text-red-600 transition-colors"
         >
           <LogOut className="h-5 w-5" />
           Sign Out
         </button>
+        <ThemeToggle />
       </div>
     </div>
   )

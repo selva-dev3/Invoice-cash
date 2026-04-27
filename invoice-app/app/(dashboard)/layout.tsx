@@ -12,7 +12,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
+    <div className="flex min-h-screen bg-background">
       {/* Desktop Sidebar */}
       <div className="hidden md:flex w-60 flex-col fixed inset-y-0 z-50">
         <Sidebar />

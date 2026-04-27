@@ -15,7 +15,7 @@ export function Providers({ children }: { children: ReactNode }) {
       <SessionProvider>
       <ThemeProvider
         attribute="class"
-        defaultTheme="light"
+        defaultTheme="system"
         enableSystem
         disableTransitionOnChange
       >

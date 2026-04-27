@@ -64,7 +64,7 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <div className="flex flex-col h-full bg-white border-r shadow-sm">
+    <div className="flex flex-col h-full bg-card border-r shadow-sm">
       <div className="p-6">
         <Link href="/" className="flex items-center gap-2">
           <motion.div 

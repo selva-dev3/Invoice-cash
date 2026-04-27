@@ -70,7 +70,7 @@ export default function LoginPage() {
   }
 
   return (
-    <Card className="border-none shadow-xl bg-white/80 backdrop-blur-sm">
+    <Card className="border-none shadow-xl bg-card/80 backdrop-blur-sm">
       <CardHeader className="space-y-1 text-center">
         <CardTitle className="text-2xl font-bold tracking-tight">Sign in</CardTitle>
         <CardDescription>
@@ -117,7 +117,7 @@ export default function LoginPage() {
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white px-2 text-muted-foreground">
+            <span className="bg-background px-2 text-muted-foreground">
               Or continue with
             </span>
           </div>

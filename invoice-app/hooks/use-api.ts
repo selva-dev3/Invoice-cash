@@ -169,3 +169,53 @@ export function useCreateExpense() {
     },
   })
 }
+
+export function useExpense(id: string) {
+  return useQuery({
+    queryKey: ["expense", id],
+    queryFn: async () => {
+      const { data } = await api.get(`/expenses/${id}`)
+      return data
+    },
+    enabled: !!id,
+  })
+}
+
+export function useDeleteExpense() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { data } = await api.delete(`/expenses/${id}`)
+      return data
+    },
+    onSuccess: () => {
+      toast.success("Expense deleted successfully")
+      queryClient.invalidateQueries({ queryKey: ["expenses"] })
+      queryClient.invalidateQueries({ queryKey: ["dashboard-stats"] })
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.error || "Failed to delete expense")
+    },
+  })
+}
+
+export function useUpdateExpense() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+      const { data: responseData } = await api.patch(`/expenses/${id}`, data)
+      return responseData
+    },
+    onSuccess: (_, variables) => {
+      toast.success("Expense updated successfully")
+      queryClient.invalidateQueries({ queryKey: ["expenses"] })
+      queryClient.invalidateQueries({ queryKey: ["expense", variables.id] })
+      queryClient.invalidateQueries({ queryKey: ["dashboard-stats"] })
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.error || "Failed to update expense")
+    },
+  })
+}

@@ -1,18 +1,8 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
-import { z } from "zod"
 
-const expenseSchema = z.object({
-  category: z.string().min(1).optional(),
-  description: z.string().min(1).optional(),
-  amount: z.number().min(0.01).optional(),
-  currency: z.string().optional(),
-  expenseDate: z.string().pipe(z.coerce.date()).optional(),
-  receiptUrl: z.string().optional(),
-})
-
-export async function PUT(
+export async function GET(
   req: Request,
   { params }: { params: { id: string } }
 ) {
@@ -22,22 +12,17 @@ export async function PUT(
   }
 
   try {
-    const body = await req.json()
-    const data = expenseSchema.parse(body)
-
-    const expense = await prisma.expense.update({
-      where: {
-        id: params.id,
-        userId: session.user.id,
-      },
-      data,
+    const expense = await prisma.expense.findUnique({
+      where: { id: params.id, userId: session.user.id }
     })
+
+    if (!expense) {
+      return NextResponse.json({ error: "Expense not found" }, { status: 404 })
+    }
 
     return NextResponse.json(expense)
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 })
-    }
+    console.error("Expense fetch error:", error)
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
   }
 }
@@ -53,14 +38,42 @@ export async function DELETE(
 
   try {
     await prisma.expense.delete({
-      where: {
-        id: params.id,
-        userId: session.user.id,
-      },
+      where: { id: params.id, userId: session.user.id }
     })
 
-    return new NextResponse(null, { status: 204 })
+    return NextResponse.json({ message: "Expense deleted" })
   } catch (error) {
+    console.error("Expense deletion error:", error)
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
+  }
+}
+
+export async function PATCH(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  const session = await auth()
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
+  try {
+    const body = await req.json()
+    const { amount, description, category, expenseDate } = body
+
+    const expense = await prisma.expense.update({
+      where: { id: params.id, userId: session.user.id },
+      data: {
+        amount: amount ? Number(amount) : undefined,
+        description,
+        category: category ? category.toUpperCase() : undefined,
+        expenseDate: expenseDate ? new Date(expenseDate) : undefined,
+      }
+    })
+
+    return NextResponse.json(expense)
+  } catch (error) {
+    console.error("Expense update error:", error)
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
   }
 }

@@ -14,18 +14,24 @@ export function formatCurrency(amount: number, currency: string = "USD") {
   }).format(amount)
 }
 
-export function formatDate(date: Date | string) {
+export function formatDate(date: Date | string | null | undefined) {
+  if (!date) return "—"
   const d = typeof date === "string" ? new Date(date) : date
+  if (isNaN(d.getTime())) return "Invalid Date"
   return format(d, "dd MMM yyyy")
 }
 
-export function formatRelativeDate(date: Date | string) {
+export function formatRelativeDate(date: Date | string | null | undefined) {
+  if (!date) return "—"
   const d = typeof date === "string" ? new Date(date) : date
+  if (isNaN(d.getTime())) return "Invalid Date"
   return formatDistanceToNow(d, { addSuffix: true })
 }
 
-export function formatDateShort(date: Date | string) {
+export function formatDateShort(date: Date | string | null | undefined) {
+  if (!date) return "—"
   const d = typeof date === "string" ? new Date(date) : date
+  if (isNaN(d.getTime())) return "Invalid Date"
   return format(d, "MMM dd")
 }
 

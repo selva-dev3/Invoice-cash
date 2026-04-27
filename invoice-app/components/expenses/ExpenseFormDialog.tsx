@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -28,8 +28,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Plus } from "lucide-react"
-import { useCreateExpense } from "@/hooks/use-api"
+import { Plus, Edit } from "lucide-react"
+import { useCreateExpense, useUpdateExpense } from "@/hooks/use-api"
 
 const formSchema = z.object({
   amount: z.string().min(1, "Amount is required"),
@@ -50,9 +50,16 @@ const CATEGORIES = [
   "OTHER",
 ]
 
-export function ExpenseFormDialog() {
+interface ExpenseFormDialogProps {
+  mode?: "create" | "edit"
+  expense?: any
+  trigger?: React.ReactNode
+}
+
+export function ExpenseFormDialog({ mode = "create", expense, trigger }: ExpenseFormDialogProps) {
   const [open, setOpen] = useState(false)
   const createMutation = useCreateExpense()
+  const updateMutation = useUpdateExpense()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,25 +72,48 @@ export function ExpenseFormDialog() {
     },
   })
 
+  // Update form values when expense changes (for edit mode)
+  useEffect(() => {
+    if (mode === "edit" && expense) {
+      form.reset({
+        amount: expense.amount.toString(),
+        description: expense.description,
+        category: expense.category,
+        expenseDate: new Date(expense.expenseDate).toISOString().split('T')[0],
+        currency: expense.currency,
+      })
+    }
+  }, [mode, expense, form])
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    createMutation.mutate(values, {
-      onSuccess: () => {
-        setOpen(false)
-        form.reset()
-      },
-    })
+    if (mode === "create") {
+      createMutation.mutate(values, {
+        onSuccess: () => {
+          setOpen(false)
+          form.reset()
+        },
+      })
+    } else {
+      updateMutation.mutate({ id: expense.id, data: values }, {
+        onSuccess: () => {
+          setOpen(false)
+        },
+      })
+    }
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-brand-primary hover:bg-brand-primary/90">
-          <Plus className="mr-2 h-4 w-4" /> Record Expense
-        </Button>
+        {trigger || (
+          <Button className="bg-brand-primary hover:bg-brand-primary/90">
+            <Plus className="mr-2 h-4 w-4" /> Record Expense
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Record New Expense</DialogTitle>
+          <DialogTitle>{mode === "create" ? "Record New Expense" : "Edit Expense"}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-4">
@@ -107,7 +137,7 @@ export function ExpenseFormDialog() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Category</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Category" />
@@ -155,9 +185,11 @@ export function ExpenseFormDialog() {
             <Button 
               type="submit" 
               className="w-full bg-brand-primary hover:bg-brand-primary/90"
-              disabled={createMutation.isPending}
+              disabled={createMutation.isPending || updateMutation.isPending}
             >
-              {createMutation.isPending ? "Recording..." : "Save Expense"}
+              {createMutation.isPending || updateMutation.isPending 
+                ? "Saving..." 
+                : mode === "create" ? "Save Expense" : "Update Expense"}
             </Button>
           </form>
         </Form>

@@ -73,7 +73,7 @@ export function Sidebar() {
           >
             I
           </motion.div>
-          <span className="text-xl font-bold text-slate-900 tracking-tight">
+          <span className="text-xl font-bold text-foreground tracking-tight">
             Invoice<span className="text-brand-primary">Flow</span>
           </span>
         </Link>
@@ -95,7 +95,7 @@ export function Sidebar() {
                   "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors relative group",
                   isActive
                     ? "text-brand-primary"
-                    : "text-slate-600 hover:text-slate-900"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 {isActive && (
@@ -107,7 +107,7 @@ export function Sidebar() {
                 )}
                 <route.icon className={cn(
                   "h-5 w-5",
-                  isActive ? "text-brand-primary" : "text-slate-500 group-hover:text-slate-900"
+                  isActive ? "text-brand-primary" : "text-muted-foreground group-hover:text-foreground"
                 )} />
                 {route.label}
               </Link>
@@ -119,7 +119,7 @@ export function Sidebar() {
       <div className="p-4 border-t flex items-center justify-between gap-4">
         <button
           onClick={() => signOut()}
-          className="flex items-center gap-3 flex-1 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-red-50 hover:text-red-600 transition-colors"
+          className="flex items-center gap-3 flex-1 px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:bg-red-500/10 hover:text-red-500 transition-colors"
         >
           <LogOut className="h-5 w-5" />
           Sign Out

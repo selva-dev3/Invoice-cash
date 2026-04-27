@@ -98,7 +98,7 @@ export default function ExpenseDetailPage({ params }: { params: { id: string } }
               <div>
                 <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Category</p>
                 <div className="mt-1">
-                  <span className="px-2 py-1 rounded-full text-[10px] font-bold uppercase bg-slate-100 text-slate-700 border border-slate-200">
+                  <span className="px-2 py-1 rounded-full text-[10px] font-bold uppercase bg-muted text-muted-foreground border">
                     {expense.category}
                   </span>
                 </div>
@@ -122,7 +122,7 @@ export default function ExpenseDetailPage({ params }: { params: { id: string } }
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-slate-600 leading-relaxed italic border-l-4 border-slate-200 pl-4 py-2 bg-slate-50 rounded-r-md">
+            <p className="text-foreground leading-relaxed italic border-l-4 border-primary pl-4 py-2 bg-muted/30 rounded-r-md">
               "{expense.description || 'No description provided.'}"
             </p>
             <div className="mt-8 pt-6 border-t space-y-4">

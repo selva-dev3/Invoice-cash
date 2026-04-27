@@ -48,7 +48,7 @@ export function ForecastChart({ data }: ForecastChartProps) {
               <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
           <XAxis 
             dataKey="date" 
             tickFormatter={formatDateShort} 
@@ -69,7 +69,7 @@ export function ForecastChart({ data }: ForecastChartProps) {
             content={({ active, payload }) => {
               if (active && payload && payload.length) {
                 return (
-                  <div className="bg-white p-3 border rounded-lg shadow-lg">
+                  <div className="bg-card p-3 border rounded-lg shadow-lg">
                     <p className="text-sm font-semibold mb-1">{formatDateShort(payload[0].payload.date)}</p>
                     <p className="text-sm text-brand-primary font-bold">
                       Predicted: {formatCurrency(payload[0].value as number)}

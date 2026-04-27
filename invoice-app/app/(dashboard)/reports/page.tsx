@@ -143,7 +143,13 @@ export default function ReportsPage() {
                 <YAxis />
                 <Tooltip 
                   formatter={(value: number) => formatCurrency(value, "USD")}
-                  contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                  contentStyle={{ 
+                    borderRadius: '8px', 
+                    border: '1px solid hsl(var(--border))', 
+                    backgroundColor: 'hsl(var(--card))',
+                    color: 'hsl(var(--foreground))'
+                  }}
+                  itemStyle={{ color: 'hsl(var(--foreground))' }}
                 />
                 <Bar dataKey="amount" radius={[4, 4, 0, 0]}>
                   {chartData.map((_: any, index: number) => (
@@ -178,7 +184,16 @@ export default function ReportsPage() {
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value: number) => formatCurrency(value, "USD")} />
+                  <Tooltip 
+                    formatter={(value: number) => formatCurrency(value, "USD")}
+                    contentStyle={{ 
+                      borderRadius: '8px', 
+                      border: '1px solid hsl(var(--border))', 
+                      backgroundColor: 'hsl(var(--card))',
+                      color: 'hsl(var(--foreground))'
+                    }}
+                    itemStyle={{ color: 'hsl(var(--foreground))' }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
             ) : (

@@ -90,7 +90,8 @@ export function useSendInvoice() {
       router.refresh()
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.error || "Failed to send invoice")
+      const details = error.response?.data?.details?.message
+      toast.error(details || error.response?.data?.error || "Failed to send invoice")
     },
   })
 }

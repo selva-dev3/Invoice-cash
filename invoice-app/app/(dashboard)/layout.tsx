@@ -2,6 +2,7 @@ import { ReactNode } from "react"
 import { Sidebar } from "@/components/shared/Sidebar"
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
+import { PageAnimatePresence } from "@/components/shared/PageAnimatePresence"
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const session = await auth()
@@ -20,7 +21,9 @@ export default async function DashboardLayout({ children }: { children: ReactNod
       {/* Main Content Area */}
       <main className="flex-1 md:pl-60">
         <div className="container mx-auto py-8 px-4 md:px-8 max-w-7xl">
-          {children}
+          <PageAnimatePresence>
+            {children}
+          </PageAnimatePresence>
         </div>
       </main>
     </div>

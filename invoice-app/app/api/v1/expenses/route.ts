@@ -38,3 +38,31 @@ export async function GET() {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
   }
 }
+
+export async function POST(req: Request) {
+  const session = await auth()
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
+  try {
+    const body = await req.json()
+    const { amount, description, category, expenseDate, currency } = body
+
+    const expense = await prisma.expense.create({
+      data: {
+        amount: Number(amount),
+        description,
+        category: category.toUpperCase(),
+        expenseDate: new Date(expenseDate),
+        currency: currency || "USD",
+        userId: session.user.id
+      }
+    })
+
+    return NextResponse.json(expense)
+  } catch (error) {
+    console.error("Expense creation error:", error)
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
+  }
+}

@@ -150,3 +150,22 @@ export function useDeleteClient() {
     },
   })
 }
+
+export function useCreateExpense() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (expenseData: any) => {
+      const { data } = await api.post("/expenses", expenseData)
+      return data
+    },
+    onSuccess: () => {
+      toast.success("Expense recorded successfully!")
+      queryClient.invalidateQueries({ queryKey: ["expenses"] })
+      queryClient.invalidateQueries({ queryKey: ["dashboard-stats"] })
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.error || "Failed to record expense")
+    },
+  })
+}

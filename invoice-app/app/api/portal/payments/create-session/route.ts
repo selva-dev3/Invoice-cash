@@ -3,6 +3,9 @@ import { prisma } from "@/lib/prisma"
 import { stripe } from "@/lib/stripe"
 import { generatePortalUrl } from "@/lib/utils"
 
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+
 export async function POST(req: Request) {
   try {
     const { portalToken } = await req.json()

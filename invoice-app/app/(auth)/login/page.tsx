@@ -27,7 +27,9 @@ const loginSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 })
 
-export default function LoginPage() {
+import { Suspense } from "react"
+
+function LoginForm() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -138,5 +140,25 @@ export default function LoginPage() {
         </div>
       </CardFooter>
     </Card>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <Card className="border-none shadow-xl bg-card/80 backdrop-blur-sm">
+        <CardHeader className="space-y-1 text-center">
+          <CardTitle className="text-2xl font-bold tracking-tight">Sign in</CardTitle>
+          <CardDescription>
+            Loading...
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex justify-center py-8">
+          <Loader2 className="h-8 w-8 animate-spin text-brand-primary" />
+        </CardContent>
+      </Card>
+    }>
+      <LoginForm />
+    </Suspense>
   )
 }

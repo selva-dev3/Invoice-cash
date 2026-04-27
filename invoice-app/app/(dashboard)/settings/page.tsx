@@ -41,7 +41,7 @@ export default async function SettingsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border">
+            <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg border">
               <div>
                 <p className="font-bold">Free Plan</p>
                 <p className="text-sm text-muted-foreground">Up to 5 invoices per month</p>

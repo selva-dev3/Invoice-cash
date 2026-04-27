@@ -174,7 +174,7 @@ export function InvoiceTable() {
 
   if (isLoading) {
     return (
-      <div className="flex h-[200px] items-center justify-center bg-white rounded-md border">
+      <div className="flex h-[200px] items-center justify-center bg-card rounded-md border">
         <Loader2 className="h-6 w-6 animate-spin text-brand-primary" />
       </div>
     )
@@ -182,7 +182,7 @@ export function InvoiceTable() {
 
   if (error) {
     return (
-      <div className="flex h-[200px] items-center justify-center bg-white rounded-md border text-red-500">
+      <div className="flex h-[200px] items-center justify-center bg-card rounded-md border text-red-500">
         Error loading invoices.
       </div>
     )
@@ -190,7 +190,7 @@ export function InvoiceTable() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-md border bg-white">
+      <div className="rounded-md border bg-card">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

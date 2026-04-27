@@ -380,7 +380,7 @@ export function InvoiceForm({ mode, initialData }: InvoiceFormProps) {
               </FormItem>
             )}
           />
-          <div className="bg-slate-50 p-6 rounded-lg border">
+          <div className="bg-card p-6 rounded-lg border">
             <InvoiceTotals 
               subtotal={subtotal}
               taxRate={watchedTaxRate}

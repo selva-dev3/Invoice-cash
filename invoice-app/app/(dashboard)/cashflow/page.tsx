@@ -66,7 +66,7 @@ export default async function CashFlowPage() {
           </CardHeader>
           <CardContent>
             {/* Additional chart or detailed comparison */}
-            <div className="h-[200px] bg-slate-50 rounded-md border border-dashed flex items-center justify-center text-muted-foreground">
+            <div className="h-[200px] bg-muted/50 rounded-md border border-dashed flex items-center justify-center text-muted-foreground">
               Comparison visualization
             </div>
           </CardContent>

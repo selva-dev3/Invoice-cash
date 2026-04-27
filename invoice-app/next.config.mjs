@@ -16,6 +16,7 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   },
+  transpilePackages: ['next-auth', 'jose', '@auth/core'],
 }
 
 export default nextConfig

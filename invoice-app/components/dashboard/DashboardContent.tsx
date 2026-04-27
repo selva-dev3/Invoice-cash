@@ -88,7 +88,7 @@ export function DashboardContent() {
               <CardTitle>Cash Flow Forecast (30 Days)</CardTitle>
             </CardHeader>
             <CardContent className="pl-2">
-              <div className="h-[300px] flex items-center justify-center text-muted-foreground bg-slate-50 rounded-md border border-dashed">
+              <div className="h-[300px] flex items-center justify-center text-muted-foreground bg-muted/50 rounded-md border border-dashed">
                 <TrendingUp className="mr-2 h-4 w-4" />
                 Forecast visualization...
               </div>

@@ -20,17 +20,18 @@ const nextConfig = {
     // Keep Prisma and bcrypt out of edge/browser bundles
     serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs'],
   },
-  webpack: (config, { webpack, nextRuntime }) => {
+  webpack: (config, { nextRuntime }) => {
     // Fix "__dirname is not defined" in Vercel Edge Runtime.
-    // Vercel's builder bundles code that references __dirname into the
-    // middleware even though middleware.ts itself doesn't use it.
-    // This polyfill prevents the ReferenceError at runtime.
+    // On Vercel, a transitive dependency referencing __dirname leaks into
+    // the middleware bundle. By setting node.__dirname to true, webpack
+    // replaces __dirname with the resolved directory path at build time
+    // instead of leaving it as a runtime reference.
     if (nextRuntime === 'edge') {
-      config.plugins.push(
-        new webpack.DefinePlugin({
-          __dirname: JSON.stringify('/'),
-        })
-      )
+      config.node = {
+        ...config.node,
+        __dirname: true,
+        __filename: true,
+      }
     }
     return config
   },
